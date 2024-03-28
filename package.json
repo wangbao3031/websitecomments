@@ -1,0 +1,31 @@
+{
+  "name": "websitecomments",
+  "version": "1.0.2",
+  "description": "",
+  "type": "module",
+  "main": "websitecomments.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wangbao3031/websitecomments"
+  },
+  "website": "https://github.com/wangbao3031/websitecomments.git",
+  "keywords": [
+    "websitecomments"
+  ],
+  "author": "wangbao3031",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wangbao3031/websitecomments/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "homepage": "https://github.com/wangbao3031/websitecomments#readme",
+  "dependencies": {
+    "scriptionserviceemiallog": "1.0.2"
+  }
+}
