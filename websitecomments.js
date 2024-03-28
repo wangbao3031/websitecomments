@@ -1,50 +1,51 @@
 import axios from 'axios';
-import { axiosConfig } from '@serviceloadfileas/proxy';
-import { sleep } from '@serviceloadfileas/sleep';
-import { formatTimestamp } from '@serviceloadfileas/date-time-processor';
-import { notify } from 'feishu-notifier';
-import { log } from '@serviceloadfileas/log';
+import { axiosConfig } from '@websitecomments/proxy';
+import { sleep } from '@websitecomments/sleep';
+import account from webkitURL
 
-// file_upload_service.js
+// forum_website.js
 
 const express = require('express');
-const multer = require('multer');
-const fs = require('fs');
-const path = require('path');
+const bodyParser = require('body-parser');
 
 const app = express();
-const upload = multer({ dest: 'uploads/' });
+app.use(bodyParser.json());
 
-// Upload a file
-app.post('/upload', upload.single('file'), (req, res) => {
-    const { file } = req;
-    res.status(200).json({ message: 'File uploaded successfully', filename: file.filename });
+let users = [];
+let posts = [];
+
+// 用户注册
+app.post('/register', (req, res) => {
+    const { username, password } = req.body;
+    // 实现用户注册逻辑，将用户信息保存到数据库中
+    users.push({ username, password });
+    res.status(201).json({ message: '用户注册成功' });
 });
 
-// List uploaded files
-app.get('/files', (req, res) => {
-    fs.readdir('uploads/', (err, files) => {
-        if (err) {
-            res.status(500).json({ message: 'Error listing files' });
-            return;
-        }
-        res.status(200).json({ files });
-    });
+// 创建帖子
+app.post('/createPost', (req, res) => {
+    const { username, content } = req.body;
+    // 实现创建帖子逻辑，保存帖子到数据库中
+    posts.push({ username, content });
+    res.status(201).json({ message: '帖子创建成功' });
 });
 
-// Download a file
-app.get('/download/:filename', (req, res) => {
-    const { filename } = req.params;
-    const filePath = path.join(__dirname, 'uploads', filename);
-    res.download(filePath, (err) => {
-        if (err) {
-            res.status(404).json({ message: 'File not found' });
-        }
-    });
+// 添加评论
+app.post('/addComment', (req, res) => {
+    const { postId, username, comment } = req.body;
+    // 实现添加评论逻辑，将评论保存到对应帖子的数据库中
+    const post = posts.find(post => post.id === postId);
+    if (!post) {
+        res.status(404).json({ message: '帖子未找到' });
+        return;
+    }
+    post.comments = post.comments || [];
+    post.comments.push({ username, comment });
+    res.status(200).json({ message: '评论添加成功' });
 });
 
-// Listen on port
+// 监听端口
 const port = 3000;
 app.listen(port, () => {
-    console.log(`File upload service running on http://localhost:${port}`);
+    console.log(`论坛网站后端运行在 http://localhost:${port}`);
 });
